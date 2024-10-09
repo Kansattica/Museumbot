@@ -51,7 +51,7 @@ function get_shuffle_posts() : Postable[]
 	return shuffle(parse(readFileSync('./posts.csv', 'utf-8'), {
 		columns: true,
 		skip_empty_lines: true
-	}).map((post: CsvRow) => new Postable(post.filename.split(" AND "), post.description)));
+	}).map((post: CsvRow) => new Postable(post.filename.split(" AND ").map((name) => name.replace(".jpg", ".webp")), post.description)));
 }
 
 
@@ -87,30 +87,32 @@ async function main() {
 	// check_posts(ShuffleState.posts);
 	const post = ShuffleState.get_next_post();
 
-	console.log(post);
+	// console.log(post);
 
     await agent.login({ identifier: process.env.BLUESKY_USERNAME!, password: process.env.BLUESKY_PASSWORD!})
 
-	const uploadedBlobs = await Promise.all(post.images.map((filename) => agent.uploadBlob(readFileSync(base_image_path + filename))));
+	const uploadedBlobs = await Promise.all(post.images.map((filename) => agent.uploadBlob(readFileSync(base_image_path + filename), {encoding: 'image/webp'})));
 
-	console.log(uploadedBlobs);
-
-	return
+	//console.log(uploadedBlobs);
 
     await agent.post({
         text: post.body,
 		langs: ["en-US"],
-		createdAt: new Date().toISOString()
+		createdAt: new Date().toISOString(),
+		embed: {
+			$type: 'app.bsky.embed.images',
+			images: uploadedBlobs.map((uploaded) => ({ image: uploaded.data.blob, alt: post.body }))
+		}
     });
-    console.log("Just posted!")
+    //console.log("Just posted!")
 }
 
 main();
 
 // Run this on a cron job
 //const scheduleExpressionMinute = '* * * * *'; // Run once every minute for testing
-//const scheduleExpression = '0 */3 * * *'; // Run once every three hours in prod
+const scheduleExpression = '5 12 * * *'; // Run at noon:05, ideally
 
-//const job = new CronJob(scheduleExpressionMinute, main); // change to scheduleExpressionMinute for testing
+const job = new CronJob(scheduleExpression, main); 
 
-//job.start();
+job.start();
