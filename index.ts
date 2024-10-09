@@ -54,6 +54,7 @@ function get_shuffle_posts() : Postable[]
 	}).map((post: CsvRow) => new Postable(post.filename.split(" AND "), post.description)));
 }
 
+
 class ShuffleState
 {
 	private static posts: Postable[] = get_shuffle_posts();
@@ -71,15 +72,31 @@ class ShuffleState
 	}
 }
 
+const base_image_path = "./images/";
+
+function check_posts(posts: Postable[])
+{
+	for (let post of posts)
+	{
+		post.images.map(x => readFileSync(base_image_path + x));
+	}
+}
+
 async function main() {
 
+	// check_posts(ShuffleState.posts);
 	const post = ShuffleState.get_next_post();
 
 	console.log(post);
 
-	return;
-
     await agent.login({ identifier: process.env.BLUESKY_USERNAME!, password: process.env.BLUESKY_PASSWORD!})
+
+	const uploadedBlobs = await Promise.all(post.images.map((filename) => agent.uploadBlob(readFileSync(base_image_path + filename))));
+
+	console.log(uploadedBlobs);
+
+	return
+
     await agent.post({
         text: post.body,
 		langs: ["en-US"],
