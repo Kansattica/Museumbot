@@ -107,6 +107,8 @@ async function main() {
     //console.log("Just posted!")
 }
 
+console.log("Started! Let's post.");
+
 main();
 
 // Run this on a cron job
