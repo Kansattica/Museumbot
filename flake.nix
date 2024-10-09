@@ -16,14 +16,7 @@
         pkgs = nixpkgs.legacyPackages.${system};
       in
       {
-        devShells.default = pkgs.mkShell { packages = [ pkgs.bashInteractive pkgs.typescript pkgs.nodejs ]; };
-        languages.javascript = {
-          enable = true;
-          npm = {
-            enable = true;
-            install.enable = true;
-          };
-        };
+        devShells.default = pkgs.mkShell { packages = [ pkgs.bashInteractive pkgs.nodejs_18 ]; };
       }
     );
 }
