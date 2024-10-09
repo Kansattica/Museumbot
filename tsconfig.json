@@ -1,8 +1,7 @@
 {
 	"extends": "@tsconfig/node18/tsconfig.json",
 	"compilerOptions": {
-		"noEmitOnError": true,
-		"sourceMap": true
+		"noEmitOnError": true
 	},
 	"files": [ "index.ts" ]
 }
