@@ -2,6 +2,7 @@
   "dependencies": {
     "@atproto/api": "^0.6.20",
     "cron": "^3.1.0",
+    "csv-parse": "^5.5.6",
     "dotenv": "^16.3.1",
     "process": "^0.11.10",
     "ts-node": "^10.9.2",

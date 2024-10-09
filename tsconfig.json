@@ -1,4 +1,7 @@
 {
 	"extends": "@tsconfig/node18/tsconfig.json",
+	"compilerOptions": {
+		"noEmitOnError": true
+	},
 	"files": [ "index.ts" ]
 }
