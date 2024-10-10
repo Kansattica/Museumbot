@@ -64,7 +64,7 @@ class ShuffleState
 		if (ShuffleState.posts.length === 0)
 		{
 			ShuffleState.posts = get_shuffle_posts();
-			console.log("Reshufflin' over here!");
+			//console.log("Reshufflin' over here!");
 		}
 
 		// we know this can't be undefined
