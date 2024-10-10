@@ -116,7 +116,7 @@ main();
 
 // Run this on a cron job
 //const scheduleExpressionMinute = '* * * * *'; // Run once every minute for testing
-const scheduleExpression = '5 12 * * *'; // Run at noon:05, ideally
+const scheduleExpression = '59 11 * * *'; // Run right before noon to make sure it's not going at midnight.
 
 const job = new CronJob(scheduleExpression, main); 
 
