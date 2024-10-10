@@ -51,7 +51,7 @@ function get_shuffle_posts() : Postable[]
 	return shuffle(parse(readFileSync('./posts.csv', 'utf-8'), {
 		columns: true,
 		skip_empty_lines: true
-	}).map((post: CsvRow) => new Postable(post.filename.split(" AND ").map((name) => name.replace(".jpg", ".webp")), post.description)));
+	}).map((post: CsvRow) => new Postable(post.filename.split(" AND "), post.description)));
 }
 
 
@@ -70,21 +70,22 @@ class ShuffleState
 		// we know this can't be undefined
 		return ShuffleState.posts.pop() as Postable;
 	}
+
+	static check_posts()
+	{
+		for (let post of ShuffleState.posts)
+		{
+			post.images.map(x => readFileSync(base_image_path + x));
+		}
+	}
+
 }
 
 const base_image_path = "./images/";
 
-function check_posts(posts: Postable[])
-{
-	for (let post of posts)
-	{
-		post.images.map(x => readFileSync(base_image_path + x));
-	}
-}
-
 async function main() {
 
-	// check_posts(ShuffleState.posts);
+	ShuffleState.check_posts();
 	const post = ShuffleState.get_next_post();
 
 	// console.log(post);
