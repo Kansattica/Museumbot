@@ -85,7 +85,6 @@ const base_image_path = "./images/";
 
 async function main() {
 
-	ShuffleState.check_posts();
 	const post = ShuffleState.get_next_post();
 
 	// console.log(post);
@@ -109,6 +108,9 @@ async function main() {
 }
 
 console.log("Started! Let's post.");
+
+// throw and scream if one of the images doesn't exist
+ShuffleState.check_posts();
 
 main();
 
