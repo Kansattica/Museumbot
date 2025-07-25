@@ -166,7 +166,7 @@ const scheduleExpression = '59 11 * * *'; // Run right before noon to make sure 
 
 const job = new CronJob(scheduleExpression, main); 
 
-const hornyScheduleExpression = '0 */4 * * *'; // Run right before noon to make sure it's not going at midnight.
+const hornyScheduleExpression = '0 */4 * * *'; 
 
 const sexy_job = new CronJob(hornyScheduleExpression, horny_on_main); 
 
