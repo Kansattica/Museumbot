@@ -83,7 +83,7 @@ class ShuffleState
 
 function get_horny_shuffle_posts() : string[]
 {
-	return shuffle(readFileSync('./porn.tsv', 'utf-8')).map(name => name.trim())
+	return shuffle(readFileSync('./porn.tsv', 'utf-8').split('\n')).map(name => name.trim())
 }
 
 class HornyShuffleState
@@ -99,7 +99,7 @@ class HornyShuffleState
 		}
 
 		// we know this can't be undefined
-		return HornyShuffleState.posts.pop() as Postable;
+		return HornyShuffleState.posts.pop() as string;
 	}
 
 }
