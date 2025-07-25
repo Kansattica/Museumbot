@@ -81,6 +81,29 @@ class ShuffleState
 
 }
 
+function get_horny_shuffle_posts() : string[]
+{
+	return shuffle(readFileSync('./porn.tsv', 'utf-8')).map(name => name.trim())
+}
+
+class HornyShuffleState
+{
+	private static posts: string[] = get_horny_shuffle_posts();
+
+	static get_next_post(): string
+	{
+		if (HornyShuffleState.posts.length === 0)
+		{
+			HornyShuffleState.posts = get_horny_shuffle_posts();
+			//console.log("Reshufflin' over here!");
+		}
+
+		// we know this can't be undefined
+		return HornyShuffleState.posts.pop() as Postable;
+	}
+
+}
+
 const base_image_path = "./images/";
 
 async function main() {
@@ -107,12 +130,31 @@ async function main() {
     //console.log("Just posted!")
 }
 
+async function horny_on_main() {
+
+	const post = HornyShuffleState.get_next_post();
+
+	// console.log(post);
+
+    await agent.login({ identifier: process.env.BLUESKY_USERNAME_ERO!, password: process.env.BLUESKY_PASSWORD_ERO!})
+
+	//console.log(uploadedBlobs);
+
+    await agent.post({
+        text: post,
+		langs: ["en-US"],
+		createdAt: new Date().toISOString(),
+    });
+    //console.log("Just posted!")
+}
+
 console.log("Started! Let's post.");
 
 // throw and scream if one of the images doesn't exist
 ShuffleState.check_posts();
 
 main();
+horny_on_main();
 
 // Run this on a cron job
 //const scheduleExpressionMinute = '* * * * *'; // Run once every minute for testing
@@ -120,4 +162,9 @@ const scheduleExpression = '59 11 * * *'; // Run right before noon to make sure 
 
 const job = new CronJob(scheduleExpression, main); 
 
+const hornyScheduleExpression = '0 */4 * * *'; // Run right before noon to make sure it's not going at midnight.
+
+const sexy_job = new CronJob(hornyScheduleExpression, horny_on_main); 
+
 job.start();
+sexy_job.start();
