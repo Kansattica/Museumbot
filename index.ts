@@ -29,6 +29,10 @@ const agent = new BskyAgent({
     service: 'https://bsky.social',
   })
 
+const sex_agent = new BskyAgent({
+    service: 'https://bsky.social',
+  })
+
 function getRandomInt(min: number, max: number): number {
   const minCeiled = Math.ceil(min);
   const maxFloored = Math.floor(max);
@@ -136,11 +140,11 @@ async function horny_on_main() {
 
 	// console.log(post);
 
-    await agent.login({ identifier: process.env.BLUESKY_USERNAME_ERO!, password: process.env.BLUESKY_PASSWORD_ERO!})
+    await sex_agent.login({ identifier: process.env.BLUESKY_USERNAME_ERO!, password: process.env.BLUESKY_PASSWORD_ERO!})
 
 	//console.log(uploadedBlobs);
 
-    await agent.post({
+    await sex_agent.post({
         text: post,
 		langs: ["en-US"],
 		createdAt: new Date().toISOString(),
